@@ -1,0 +1,127 @@
+﻿@model WorkspaceManager.Models.WorkspaceViewModel
+
+@{ var viewModel = Model; }
+
+@section toolbar {
+  <div id="toolbar" class="container">
+
+    <a href="https://app.powerbi.com/groups/@viewModel.Id/"
+       class="btn btn-primary btn-sm"
+       target="_blank">Go To Workspace</a>
+
+
+    @Html.ActionLink("Upload Northwind PBIX", "UploadPBIX", "Workspace",
+                      htmlAttributes: new { @class = "btn btn-primary btn-sm" },
+                      routeValues: new {
+                        workspaceId = viewModel.Id,
+                        pbixName = "NorthwindRetro.pbix",
+                        importName = "Northwind Retro"
+                      })
+
+    @Html.ActionLink("Upload Wingtip Sales PBIX", "UploadPBIXandSetSqlCreds", "Workspace",
+                      htmlAttributes: new { @class = "btn btn-primary btn-sm" },
+                      routeValues: new {
+                        workspaceId = viewModel.Id,
+                        pbixName = "WingtipSalesAnalysis.pbix",
+                        importName = "Wingtip Sales Analysis"
+                      })
+
+    @Html.ActionLink("Upload Wingtip Sales Direct Query PBIX", "UploadPBIXandSetSqlCreds", "Workspace",
+                      htmlAttributes: new { @class = "btn btn-primary btn-sm" },
+                      routeValues: new {
+                        workspaceId = viewModel.Id,
+                        pbixName = "WingtipSalesDirectQuery.pbix",
+                        importName = "Wingtip Sales Direct Query"
+                      })
+
+  
+  </div>
+}
+
+<h2>Workspace Configuration</h2>
+
+
+<div class="row">
+  <div class="col-6">
+    <div class="groovy-webpart">
+      <h3>Workspace Properties</h3>
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>@Model.Name</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>@Model.Id</td>
+          </tr>
+          @if (Model.Workspace.IsOnDedicatedCapacity == true) {
+            <tr>
+              <td>CapacityId</td>
+              <td>@Model.Workspace.CapacityId</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="groovy-webpart">
+      <h3>Workspace Users</h3>
+      <table class="table table-bordered table-striped">
+        @foreach (var workspaceUser in viewModel.workspaceUsers) {
+          <tr>
+            <td>@workspaceUser.EmailAddress</td>
+            <td>@workspaceUser.GroupUserAccessRightProperty</td>
+          </tr>
+        }
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<h2>Workspace Content</h2>
+
+
+
+<div class="row">
+  <div class="col-4">
+    <div class="groovy-webpart">
+      <h3>Dashboards</h3>
+      <table class="table table-bordered table-striped">
+        @foreach (var dashboard in viewModel.Dashboards) {
+          <tr>
+            <td>@dashboard.DisplayName</td>
+          </tr>
+        }
+      </table>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="groovy-webpart">
+      <h3>Reports</h3>
+      <table class="table table-bordered table-striped">
+        @foreach (var report in viewModel.Reports) {
+          <tr>
+            <td>@report.Name</td>
+          </tr>
+        }
+      </table>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="groovy-webpart">
+      <h3>Datasets</h3>
+      <table class="table table-bordered table-striped">
+        @foreach (var dataset in viewModel.Datasets) {
+          <tr>
+            <td>@Html.ActionLink(dataset.Name, "Index", "Dataset", routeValues: new { workspaceid= viewModel.Id, datasetid=dataset.Id}, htmlAttributes: new { })</td>
+          </tr>
+        }
+      </table>
+    </div>
+  </div>
+</div>

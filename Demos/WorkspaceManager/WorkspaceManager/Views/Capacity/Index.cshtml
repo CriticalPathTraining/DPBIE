@@ -1,0 +1,29 @@
+﻿@model WorkspaceManager.Models.CapacityViewModel
+
+@{ var capacity = Model; }
+
+<h2>Capacity Configuration</h2>
+
+
+<div class="row">
+
+  <div class="col-6">
+    <div class="groovy-webpart">
+      <h3>Capcity Properties</h3>
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>@capacity.DisplayName</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>@capacity.Id</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>

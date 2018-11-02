@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Workspace Manager</title>
+
+  <link href="~/Content/bootstrap.css" rel="stylesheet" />
+  <link href="~/Content/app.css" rel="stylesheet" />
+
+  <script src="~/Scripts/jquery-3.3.1.js"></script>
+
+  <script src="~/Scripts/bootstrap.js"></script>
+  <script src="~/Scripts/umd/popper.js"></script>
+  <script src="~/Scripts/umd/popper-utils.js"></script>
+
+</head>
+<body>
+
+  <div id="banner" class="container">
+    <nav id="topnav" class="navbar navbar-expand-sm navbar bg-light navbar-light">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          @Html.ActionLink("Workspace Manager", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "nav-link navbar-brand" })
+        </li>
+        <li class="nav-item">
+          @Html.ActionLink("Workspaces", "Index", "Workspaces", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+        </li>
+        <li class="nav-item">
+          @Html.ActionLink("Capacities", "Index", "Capacities", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+        </li>
+      </ul>
+      @Html.Partial("_LoginPartial")
+    </nav>
+  </div>
+
+  @RenderSection("toolbar", required: false)
+
+  <div id="content-box" class="container body-content">
+    @RenderBody()
+  </div>
+
+</body>
+</html>

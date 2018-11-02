@@ -1,0 +1,15 @@
+﻿{
+  "CustomerId": "2",
+  "FirstName": "Penelope",
+  "LastName": "Carter",
+  "Company": "Wayne Enterprises",
+  "EmailAddress": "Penelope.Carter@WayneEnterprises.com",
+  "WorkPhone": "1(336)666-8888",
+  "HomePhone": "1(336)111-1111",
+  "Address": "66 Redwood Drive",
+  "City": "Winston Salem",
+  "State": "NC",
+  "Zipcode": "27103",
+  "Gender": "F",
+  "BirthDate": "1955-10-24T00:00:00"
+}

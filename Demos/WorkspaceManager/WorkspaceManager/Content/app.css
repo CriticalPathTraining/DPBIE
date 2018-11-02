@@ -1,0 +1,111 @@
+﻿
+
+body {
+  background-image: url(img/background.jpg);
+  background-size: auto;
+  background-repeat: round;
+}
+
+
+
+#banner {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#topnav, .bg-light {
+  background-image: linear-gradient(#CCC, White, White, #EEE);
+  border-bottom: 1px solid #555;
+}
+
+#toolbar {
+  background-image: linear-gradient(#BBB, #999, #BBB);
+  padding: 8px;
+  border-bottom: 1px solid #555;
+}
+
+.btn-primary {
+  color: #FFE;
+  background-color: #555;
+  border-color: #111;
+}
+
+#content-box {
+  padding: 16px;
+  padding-top: 8px;
+  background-color: #FFF;
+  border: 1px solid #DDD;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  min-height: 480px;
+}
+
+.jumbotron {
+  margin: 16px;
+  background-color: #FFFFF1;
+  border: 1px solid #AAA;
+  padding-top: 24px;
+}
+
+.alert-warning {
+  border: 1px solid black;
+  margin-top: 18px;
+}
+
+
+h1 {
+  font-size: 1.5rem;
+  color: black;
+  padding-bottom: 2px;
+  border-bottom: 1px solid black;
+}
+
+
+h2 {
+  margin-top: 16px;
+  font-size: 1.35rem;
+  color: DarkBlue;
+  border-bottom: 2px solid darkblue;
+  padding-bottom: 2px;
+  margin-bottom: 8px;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+
+
+.table th {
+  color: white;
+  background-color: black;
+}
+
+.table th, .table td {
+  padding: 4px;
+  padding-left: 8px;
+}
+
+.btn-link {
+  padding: 0;
+  line-height: 1;
+}
+
+.groovy-webpart {
+  margin: 0px;
+  margin-top: 8px;
+  border: 1px solid #888;
+  border-radius: 8px;
+  padding: 0;
+}
+
+  .groovy-webpart h3 {
+    margin: 0;
+    color: white;
+    background-color: #444;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-size: 1.0rem;
+    padding: 4px;
+    padding-left: 10px;
+  }

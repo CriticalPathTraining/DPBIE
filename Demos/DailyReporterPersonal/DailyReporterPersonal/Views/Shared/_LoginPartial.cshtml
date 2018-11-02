@@ -1,0 +1,26 @@
+﻿@using System.Security.Claims
+
+@if (Request.IsAuthenticated) {
+  ClaimsPrincipal principal = ClaimsPrincipal.Current;
+  string firstName = principal.FindFirst(ClaimTypes.GivenName).Value;
+  string laststName = principal.FindFirst(ClaimTypes.Surname).Value;
+  string userName = firstName + " " + laststName;
+
+  <text>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" >
+        @Html.ActionLink("Hello " + userName + "!", "UserProfile", "Account", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+      </li>
+      <li class="nav-item" >
+        @Html.ActionLink("Sign out", "SignOut", "Account", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+      </li>
+    </ul>
+  </text>
+}
+else {
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item" >
+      @Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })
+    </li>
+  </ul>
+}

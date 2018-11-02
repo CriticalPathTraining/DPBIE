@@ -1,0 +1,19 @@
+﻿
+<div class="jumbotron">
+
+  <h1>Welcome to Workspace Manager</h1>
+  <p class="blockquote" >A sample web application for exploring the Power BI Service API.</p>
+ 
+
+  @if (Request.IsAuthenticated == false) {
+    <div class="alert alert-warning">
+      <h3>This Page Is Running Under Anonymous Access</h3>
+      <p>Click the <b>Sign In</b> link in the upper right corner and sign in 
+      with a user account with a Power BI Pro license.</p>
+    </div>
+  }
+
+  <p>Learn more @Html.ActionLink("about this application", "About", "Home", routeValues:null, htmlAttributes: new { @class="link" }).</p>
+
+</div>
+

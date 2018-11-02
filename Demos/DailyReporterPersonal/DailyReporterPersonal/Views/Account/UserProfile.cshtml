@@ -1,0 +1,34 @@
+﻿@using System.Security.Claims
+
+@{
+  ClaimsPrincipal principal = ClaimsPrincipal.Current;
+  string firstName = principal.FindFirst(ClaimTypes.GivenName).Value;
+  string laststName = principal.FindFirst(ClaimTypes.Surname).Value;
+  string userPrincipalName = principal.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn").Value;
+  string tenantId = principal.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+  string tokenIssuer = principal.FindFirst("iss").Value;
+  string authenticationMethod = principal.FindFirst("http://schemas.microsoft.com/claims/authnmethodsreferences").Value;
+  string audience = principal.FindFirst("aud").Value;
+  string ipAddress = principal.FindFirst("ipaddr").Value;
+
+}
+<h2>User Authentication Profile</h2>
+
+<table class="table table-sm table-bordered table-striped" >
+  <thead style="background-color:black;color:white;" >
+    <tr>
+      <td>Claim</td>
+      <td>Value</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>First Name</td><td>@firstName</td></tr>
+    <tr><td>Last Name</td><td>@laststName</td></tr>
+    <tr><td>User Principal Name</td><td>@userPrincipalName</td></tr>
+    <tr><td>Tenat ID</td><td>@tenantId</td></tr>
+    <tr><td>Token Issuer</td><td>@tokenIssuer</td></tr>
+    <tr><td>Authentication Method</td><td>@authenticationMethod</td></tr>
+    <tr><td>Audience</td><td>@audience</td></tr>
+    <tr><td>IP Address</td><td>@ipAddress</td></tr>
+  </tbody>
+</table>

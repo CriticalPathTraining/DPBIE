@@ -1,0 +1,35 @@
+﻿@model IList<Microsoft.PowerBI.Api.V2.Models.Group>
+@{ var workspaces = Model; }
+
+
+@section toolbar {
+  <div id="toolbar" class="container">
+    @Html.ActionLink("Create Workspace", "Create", "Workspaces", routeValues: null, htmlAttributes: new { @class = "btn btn-primary btn-sm" })
+  </div>
+}
+
+<h2>Manage Workspaces</h2>
+
+@if (workspaces.Count == 0) {
+  <div class="alert-info">You have no workspaces - you must create some</div>
+}
+else {
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Workspace Name</th>
+        <th>Workspace Id</th>
+        <th>Manage</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    @foreach (var workspace in workspaces) {
+      <tr>
+        <td>@workspace.Name</td>
+        <td>@workspace.Id</td>
+        <td>@Html.ActionLink("Manage", "Index", "Workspace", routeValues: new { workspaceid = workspace.Id }, htmlAttributes: new { @class = "btn btn-link" })</td>
+        <td>@Html.ActionLink("Delete", "DeleteWorkspace", "Workspace", routeValues: new { workspaceid = workspace.Id }, htmlAttributes: new { @class = "btn btn-link" })</td>
+      </tr>
+    }
+  </table>
+}

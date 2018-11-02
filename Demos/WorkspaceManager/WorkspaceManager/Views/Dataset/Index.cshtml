@@ -1,0 +1,149 @@
+﻿@model WorkspaceManager.Models.DatasetViewModel
+
+@{ var viewModel = Model; }
+
+@section toolbar {
+  <div id="toolbar" class="container">
+
+    @Html.ActionLink("Return to Workspace", "Index", "Workspace",
+                      htmlAttributes: new { @class = "btn btn-primary btn-sm" },
+                      routeValues: new {
+                        workspaceid = viewModel.WorkspaceId
+                      })
+
+
+
+
+    <a href="https://app.powerbi.com/groups/@viewModel.WorkspaceId/datasets/@viewModel.Id/"
+       class="btn btn-primary btn-sm"
+       target="_blank">Create New Report</a>
+
+    @if (viewModel.Dataset.IsRefreshable == true) {
+
+        @Html.ActionLink("Refresh Dataset", "Refresh", "Dataset",
+            htmlAttributes: new { @class = "btn btn-primary btn-sm" },
+            routeValues: new {
+              workspaceid = viewModel.WorkspaceId,
+              datasetid = viewModel.Id
+            })
+    }
+
+  </div>
+}
+
+<h2>Workspace Configuration</h2>
+
+
+<div class="row">
+  <div class="col-6">
+    <div class="groovy-webpart">
+      <h3>Dataset Properties</h3>
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>@Model.Name</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>@Model.Id</td>
+          </tr>
+          <tr>
+            <td>Workspace ID</td>
+            <td>@Model.WorkspaceId</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="groovy-webpart">
+      <h3>Dataset Behaviors</h3>
+      <table class="table table-bordered table-striped">
+          <tr>
+            <td>IsRefreshable</td>
+            <td>@Model.Dataset.IsRefreshable</td>
+          </tr>
+          <tr>
+            <td>IsOnPremGatewayRequired</td>
+            <td>@Model.Dataset.IsOnPremGatewayRequired</td>
+          </tr>
+          <tr>
+            <td>IsEffectiveIdentityRequired</td>
+            <td>@Model.Dataset.IsEffectiveIdentityRequired</td>
+          </tr>
+          <tr>
+            <td>IsEffectiveIdentityRolesRequired</td>
+            <td>@Model.Dataset.IsEffectiveIdentityRolesRequired</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="groovy-webpart">
+      <h3>Datasources</h3>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>DatasourceId</th>
+            <th>GatewayId</th>
+            <th>Type</th>
+            <th>Server</th>
+            <th>Database</th>
+          </tr>
+        </thead>
+
+        @foreach (var datasource in viewModel.Datasources) {
+          <tr>
+            <td>@datasource.DatasourceId</td>
+            <td>@datasource.GatewayId</td>
+            <td>@datasource.DatasourceType</td>
+            <td>@datasource.ConnectionDetails.Server</td>
+            <td>@datasource.ConnectionDetails.Database</td>
+          </tr>
+        }
+      </table>
+    </div>
+  </div>
+</div>
+
+@if (viewModel.Dataset.IsRefreshable == true) {
+  <div class="row">
+    <div class="col-12">
+      <div class="groovy-webpart">
+        <h3>Refresh History</h3>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>RefreshType</th>
+              <th>StartTime</th>
+              <th>EndTime</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          @foreach (var refresh in viewModel.RefreshHistroy) {
+          string StartTime = refresh.StartTime.HasValue ? refresh.StartTime.Value.ToString() : "N/A";
+          string EndTime = refresh.EndTime.HasValue ? refresh.EndTime.Value.ToString() : "N/A";
+            <tr>
+              <td>@refresh.RefreshType</td>
+              <td>@StartTime</td>
+              <td>@EndTime</td>
+              <td>@refresh.Status</td>
+            </tr>
+          }
+        </table>
+      </div>
+    </div>
+  </div>
+
+}
+

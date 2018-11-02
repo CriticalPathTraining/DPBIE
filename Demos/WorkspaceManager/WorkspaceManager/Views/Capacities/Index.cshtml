@@ -1,0 +1,36 @@
+﻿@model IList<Microsoft.PowerBI.Api.V2.Models.Capacity>
+@{ var capacities = Model; }
+
+
+<h2>View Capacities</h2>
+
+@if (capacities.Count == 0) {
+  <div class="alert-info">You have no workspaces - you must create some</div>
+}
+
+else {
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Display Name</th>
+        <th>Capacity Id</th>
+        <th>SKU</th>
+        <th>State</th>
+        <th>Admins</th>
+      </tr>
+    </thead>
+    @foreach (var capacity in capacities) {
+      <tr>
+        <td>@Html.ActionLink(capacity.DisplayName, "Index", "Capacity", routeValues: new { capacityid = capacity.Id}, htmlAttributes: new { @class = "btn btn-link" })</td>
+        <td>@capacity.Id</td>
+        <td>@capacity.Sku</td>
+        <td>@capacity.State</td>
+        <td>
+          @foreach(var admin in capacity.Admins) {
+            <div>@admin</div>
+          }
+        </td>
+      </tr>
+    }
+  </table>
+}

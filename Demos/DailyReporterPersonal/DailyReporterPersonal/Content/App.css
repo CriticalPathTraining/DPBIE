@@ -1,0 +1,99 @@
+﻿body {
+  background-size: auto;
+  background-repeat: round;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 12px;
+  font-family: Arial;
+  color: darkblue;
+  border-bottom: 1px solid darkblue;
+}
+
+h1 {
+  font-size: 1.35em;
+}
+
+h2 {
+  font-size: 1.25em;
+}
+
+h3 {
+  font-size: 1.1em;
+}
+
+h4 {
+  font-size: 1.0em;
+}
+
+#banner {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#topnav {
+  background-color: #000 !important;
+}
+
+.navbar-dark .navbar-nav .active > .nav-link {
+  color: #FFC;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #F2C811;
+}
+
+  .navbar-dark .navbar-nav .nav-link:hover {
+    color: orange;
+  }
+
+
+#toolbar {
+  background-color: #666 !important;
+  border-bottom: 1px solid #333;
+}
+
+  #toolbar button {
+    margin: 4px;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px;
+    color: #222;
+    background-color: #F2C811;
+    border-color: #111;
+    width: 92px;
+  }
+
+
+#content-box {
+  padding: 0px;
+  background-color: #FFF;
+}
+
+#homePageContainer {
+  padding: 24px;
+}
+
+
+.jumbotron {
+  background-color: #FFFFF1;
+  border: 1px solid #AAA;
+}
+
+table a.nav-link {
+  margin: 0px;
+  padding: 0px;
+  background-color: #FFD;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/*
+#left-nav {
+  color: white;
+  background-color: black;
+  min-height: 480px;
+}
+
+  */

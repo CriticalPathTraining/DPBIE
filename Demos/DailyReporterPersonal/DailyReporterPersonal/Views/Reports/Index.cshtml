@@ -1,0 +1,46 @@
+﻿@model DailyReporterPersonal.Models.ReportsViewModel
+
+@{
+  var reports = Model.Reports;
+  var dashboard = Model.Datasets;
+}
+
+<div class='container-fluid'>
+  <div class='row'>
+    <div id="left-nav" class='col-sm-3'>
+      <div>
+
+
+        <div class='navbar-header'>
+          <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+            <span class='sr-only'>Toggle navigation</span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+          </button>
+          Reports
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse'>
+          @if (reports.Count > 0) {
+            <ul class='nav navbar-nav'>
+              @foreach (var report in reports) {
+                <li>
+                  <span class='glyphicon glyphicon-home'></span>
+                  @report.reportName
+                </li>
+              }
+            </ul>
+          }
+
+
+        </div>
+
+
+      </div>
+    </div>
+    <div class='col-sm-9'>
+      <h2>Report Container</h2>
+    </div>
+  </div>
+</div>
