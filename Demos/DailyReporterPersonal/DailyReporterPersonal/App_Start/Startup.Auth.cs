@@ -22,7 +22,7 @@ namespace DailyReporterPersonal {
 
     private static string resourceUriPowerBi = "https://analysis.windows.net/powerbi/api";
     private static string aadInstance = "https://login.microsoftonline.com/";
-    private static string commonAuthority = aadInstance + "common/";
+    private static string commonAuthority = aadInstance + "powerbiembedding.onMicrosoft.com/";
     private static string claimsIdentifierForTenantId = "http://schemas.microsoft.com/identity/claims/tenantid";
 
     private static string clientId = ConfigurationManager.AppSettings["client-id"];
@@ -30,7 +30,6 @@ namespace DailyReporterPersonal {
     private static string replyUrl = ConfigurationManager.AppSettings["reply-url"];
 
     public void ConfigureAuth(IAppBuilder app) {
-      ApplicationDbContext db = new ApplicationDbContext();
 
       app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
@@ -53,7 +52,7 @@ namespace DailyReporterPersonal {
                 var code = context.Code;
                 ClientCredential credential = new ClientCredential(clientId, appKey);
                 string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                AuthenticationContext authContext = new AuthenticationContext(tenantAuthority, new ADALTokenCache(signedInUserID));
+                AuthenticationContext authContext = new AuthenticationContext(tenantAuthority, new ADALTokenCache());
 
                 AuthenticationResult result =
                     authContext.AcquireTokenByAuthorizationCodeAsync(

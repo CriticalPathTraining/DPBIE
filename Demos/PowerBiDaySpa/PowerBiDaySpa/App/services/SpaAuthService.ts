@@ -3,7 +3,6 @@
   export class SpaAuthService {
 
     // replace this client id with your client id
-    private static client_id: string = "27f00992-8c9f-42f5-9ab3-d19724495fdd";
     private static powerBiApiResourceId: string = "https://analysis.windows.net/powerbi/api";
 
     private static authContext: any;
@@ -13,10 +12,13 @@
     public static uiUpdateCallback;
 
     static init = () => {
+
+      console.log("redirect");
+      console.log(window.location.origin);
       
       var config: adal.Config = {
-        tenant: "SummitTime.onMicrosoft.com",
-        clientId: SpaAuthService.client_id, 
+        tenant: appSettings.tenant,
+        clientId: appSettings.clientId, 
         redirectUri: window.location.origin,
         cacheLocation: "sessionStorage",
         postLogoutRedirectUri: window.location.origin,

@@ -5,20 +5,9 @@ using System.Web;
 
 namespace DailyReporterPersonal.Models {
 
-   public class HomeViewModel {
+  public class HomeViewModel {
     public Boolean isUserAuthenticated;
+    public string jsonViewModel { get; set; }
   }
-
-  public class ReportsViewModel {
-    public List<ReportEmbeddingData> Reports { get; set; }
-    public List<DatasetEmbeddingData> Datasets { get; set; }
-  }
-
-  public class DashboardViewModel {
-  }
-
-  public class DashboardsViewModel {
-  }
-
 
 }

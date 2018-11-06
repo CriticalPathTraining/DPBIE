@@ -24,7 +24,7 @@
   });
 
   var onAuthenticationCompleted = () => {
-    refreshUi();
+   refreshUi();
   }
 
   var refreshUi = () => {
@@ -116,7 +116,7 @@
 
   }
 
-  var dashboards: Dashboard[];
+  var dashboards: Dashboard[] = [];
 
   var getDashboards = () => {
 
@@ -225,9 +225,9 @@
     powerbi.reset(embedContainer);
 
     // Get data required for embedding
-    var embedWorkspaceId = PowerBiService.appWorkspaceId;
+    var embedWorkspaceId = appSettings.appWorkspaceId;
     var embedDatasetId = dataset.id;
-    var embedUrl = "https://app.powerbi.com/reportEmbed?groupId=" + PowerBiService.appWorkspaceId;
+    var embedUrl = "https://app.powerbi.com/reportEmbed";
     var accessToken = SpaAuthService.accessToken;
 
     // Get models object to access enums for embed configuration
@@ -248,13 +248,7 @@
     // Embed the report and display it within the div container.
     var report = powerbi.createReport(embedContainer, config);
 
-
-
   }
-
-
-
-
 
 
 }

@@ -6,7 +6,7 @@
   <title>Daily Reporter Personal</title>
   <link href="~/Content/bootstrap.css" rel="stylesheet" />
   <link href="~/Content/font-awesome.css" rel="stylesheet" />
-  <link href="~/Content/App.css" rel="stylesheet" />
+  <link href="~/App/App.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -17,24 +17,10 @@
         <li class="nav-item active">
           @Html.ActionLink("Daily Reporter Personal", "Index", "Home",
                             routeValues: null, htmlAttributes: new { @class = "nav-link navbar-brand" })
-        </li>
-        <li class="nav-item">
-          @Html.ActionLink("Dashboards", "Index", "Dashboards",
-                           routeValues: null, htmlAttributes: new { @class = "nav-link" })
-        </li>
-        <li class="nav-item">
-          @Html.ActionLink("Reports", "Index", "Reports",
-                           routeValues: null, htmlAttributes: new { @class = "nav-link" })
-        </li>
-        <li class="nav-item">
-          @Html.ActionLink("Datasets", "Index", "Datasets",
-                           routeValues: null, htmlAttributes: new { @class = "nav-link" })
-        </li>
-
+        </li>      
       </ul>
       @Html.Partial("_LoginPartial")
     </nav>
-    @RenderSection("toolbar", required: false)
   </div>
 
   <!-- Add Main Body Content Here -->
@@ -43,10 +29,11 @@
   </div>
 
   <script src="~/Scripts/jquery-3.3.1.js"></script>
-  <script src="~/Scripts/jquery.validate.js"></script>
+  <script src="~/Scripts/jquery.validate.js"></script>  
+  <script src="~/Scripts/umd/popper.min.js"></script>
   <script src="~/Scripts/bootstrap.js"></script>
-  <script src="~/Scripts/popper.js"></script>
   <script src="~/Scripts/powerbi.js"></script>
+  <script src="~/App/app.js"></script>
 
 </body>
 </html>

@@ -4,14 +4,15 @@ var myApp;
         function SpaAuthService() {
         }
         // replace this client id with your client id
-        SpaAuthService.client_id = "27f00992-8c9f-42f5-9ab3-d19724495fdd";
         SpaAuthService.powerBiApiResourceId = "https://analysis.windows.net/powerbi/api";
         SpaAuthService.userName = "";
         SpaAuthService.userIsAuthenticated = false;
         SpaAuthService.init = function () {
+            console.log("redirect");
+            console.log(window.location.origin);
             var config = {
-                tenant: "SummitTime.onMicrosoft.com",
-                clientId: SpaAuthService.client_id,
+                tenant: myApp.appSettings.tenant,
+                clientId: myApp.appSettings.clientId,
                 redirectUri: window.location.origin,
                 cacheLocation: "sessionStorage",
                 postLogoutRedirectUri: window.location.origin,

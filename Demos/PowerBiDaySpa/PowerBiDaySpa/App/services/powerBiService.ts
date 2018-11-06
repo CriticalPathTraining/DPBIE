@@ -4,7 +4,7 @@
   export class PowerBiService {
     
     static apiRoot: string = "https://api.powerbi.com/v1.0/myorg/";
-    static appWorkspaceId = "7f4576c7-039a-472f-b998-546a572d5da2";
+    static appWorkspaceId = appSettings.appWorkspaceId;
     static appWorkspaceApiRoot = PowerBiService.apiRoot + "groups/" + PowerBiService.appWorkspaceId + "/"; 
 
     static GetReports = () => {

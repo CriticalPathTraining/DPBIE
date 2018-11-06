@@ -10,6 +10,7 @@ using Microsoft.PowerBI.Api.V2;
 using Microsoft.PowerBI.Api.V2.Models;
 using System.Security.Claims;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace DailyReporterPersonal.Models {
   public class PowerBiEmbeddingManager {
@@ -29,13 +30,13 @@ namespace DailyReporterPersonal.Models {
     private readonly static string clientId = ConfigurationManager.AppSettings["client-id"];
     private readonly static string clientSecret = ConfigurationManager.AppSettings["client-secret"];
     private readonly static string replyUrl = ConfigurationManager.AppSettings["reply-url"];
-
+    private readonly static string appWorkspaceId = ConfigurationManager.AppSettings["app-workspace-id"];
+    
     private static string GetAccessToken() {
 
       // create ADAL cache object
-      ApplicationDbContext db = new ApplicationDbContext();
       string signedInUserID = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-      ADALTokenCache userTokenCache = new ADALTokenCache(signedInUserID);
+      ADALTokenCache userTokenCache = new ADALTokenCache();
 
       // create authentication context
       AuthenticationContext authenticationContext = new AuthenticationContext(tenantAuthority, userTokenCache);
@@ -86,111 +87,28 @@ namespace DailyReporterPersonal.Models {
 
     #endregion
 
-      public static ReportEmbeddingData GetReportEmbeddingData(string reportId) {
-
+    public static async Task<string> GetViewModelJSON() {
       PowerBIClient pbiClient = GetPowerBiClient();
-
-      var report = pbiClient.Reports.GetReport(reportId);
-      var embedUrl = report.EmbedUrl;
-      var reportName = report.Name;
-      var accessToken = GetAccessToken();
-
-      return new ReportEmbeddingData {
-        reportId = reportId,
-        reportName = reportName,
-        embedUrl = embedUrl,
-        accessToken = accessToken
-      };
-
-    }
-
-    public static DashboardEmbeddingData GetDashboardEmbeddingData(string dashboardId) {
-
-      PowerBIClient pbiClient = GetPowerBiClient();
-
-      var dashboard = pbiClient.Dashboards.GetDashboard(dashboardId);
-      var embedUrl = dashboard.EmbedUrl;
-      var dashboardDisplayName = dashboard.DisplayName;
-
-      return new DashboardEmbeddingData {
-        dashboardId = dashboardId,
-        dashboardName = dashboardDisplayName,
-        embedUrl = embedUrl,
-        accessToken = GetAccessToken()
-      };
-
-    }
-
-    public static DashboardTileEmbeddingData GetDashboardTileEmbeddingData(string dashboardId) {
-
-      PowerBIClient pbiClient = GetPowerBiClient();
-
-      var tiles = pbiClient.Dashboards.GetTiles(dashboardId).Value;
-
-      // retrieve first tile in tiles connection
-      var tile = tiles[0];
-      var tileId = tile.Id;
-      var tileTitle = tile.Title;
-      var embedUrl = tile.EmbedUrl;
-
-      return new DashboardTileEmbeddingData {
-        dashboardId = dashboardId,
-        TileId = tileId,
-        TileTitle = tileTitle,
-        embedUrl = embedUrl,
-        accessToken = GetAccessToken()
-      };
-
-    }
-
-    public static DatasetEmbeddingData GetDatasetEmbeddingData(string datasetId) {
-
-      PowerBIClient pbiClient = GetPowerBiClient();
-
-      return new DatasetEmbeddingData {
-        datasetId = datasetId,
-        embedUrlNewReport = "https://app.powerbi.com/reportEmbed",
-        accessToken = GetAccessToken()
-      };
-
-    }
-
-    public static async Task<ReportsViewModel> GetReports() {
-
-      var client = GetPowerBiClient();
-      var reports = (await client.Reports.GetReportsAsync()).Value;
-      var reportsEmbeddingData = new List<ReportEmbeddingData>();
-      foreach (var report in reports) {
-        reportsEmbeddingData.Add(new ReportEmbeddingData {
-          reportId = report.Id,
-          reportName = report.Name,
-          embedUrl = report.EmbedUrl,
-          accessToken = GetAccessToken()
-        });
+      Object viewModel;
+      if (appWorkspaceId == "") {
+        viewModel = new {
+          datasets = (await pbiClient.Datasets.GetDatasetsAsync()).Value,
+          reports = (await pbiClient.Reports.GetReportsAsync()).Value,
+          dashboards = (await pbiClient.Dashboards.GetDashboardsAsync()).Value,
+          token = GetAccessToken()
+        };
+      }
+      else {
+        viewModel = new {
+          datasets = (await pbiClient.Datasets.GetDatasetsInGroupAsync(appWorkspaceId)).Value,
+          reports = (await pbiClient.Reports.GetReportsInGroupAsync(appWorkspaceId)).Value,
+          dashboards = (await pbiClient.Dashboards.GetDashboardsInGroupAsync(appWorkspaceId)).Value,
+          token = GetAccessToken()
+        };
       }
 
-
-      var datasets = (await client.Datasets.GetDatasetsAsync()).Value;
-      var datasetsEmbeddingData = new List<DatasetEmbeddingData>();
-      foreach (var dataset in datasets) {
-        datasetsEmbeddingData.Add(new DatasetEmbeddingData {
-          datasetId = dataset.Id,
-          datasetName = dataset.Name,
-          embedUrlNewReport = "",
-          embedUrlQnA = "",
-          accessToken = GetAccessToken()
-        });
-      }
-
-
-      var viewModel = new ReportsViewModel {
-        Reports = reportsEmbeddingData,
-        Datasets = datasetsEmbeddingData
-      };
-
-      return viewModel;
-
-
+      return JsonConvert.SerializeObject(viewModel);
     }
+
   }
 }

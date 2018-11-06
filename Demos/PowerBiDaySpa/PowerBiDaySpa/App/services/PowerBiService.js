@@ -4,7 +4,7 @@ var myApp;
         function PowerBiService() {
         }
         PowerBiService.apiRoot = "https://api.powerbi.com/v1.0/myorg/";
-        PowerBiService.appWorkspaceId = "7f4576c7-039a-472f-b998-546a572d5da2";
+        PowerBiService.appWorkspaceId = myApp.appSettings.appWorkspaceId;
         PowerBiService.appWorkspaceApiRoot = PowerBiService.apiRoot + "groups/" + PowerBiService.appWorkspaceId + "/";
         PowerBiService.GetReports = function () {
             // build URL for reports

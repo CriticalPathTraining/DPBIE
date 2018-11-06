@@ -89,7 +89,7 @@ var myApp;
         // Embed the report and display it within the div container
         var embeddedReport = powerbi.embed(embedContainer, config);
     };
-    var dashboards;
+    var dashboards = [];
     var getDashboards = function () {
         // reset embed container
         powerbi.reset(document.getElementById('embedContainer'));
@@ -173,9 +173,9 @@ var myApp;
         // reset target div
         powerbi.reset(embedContainer);
         // Get data required for embedding
-        var embedWorkspaceId = myApp.PowerBiService.appWorkspaceId;
+        var embedWorkspaceId = myApp.appSettings.appWorkspaceId;
         var embedDatasetId = dataset.id;
-        var embedUrl = "https://app.powerbi.com/reportEmbed?groupId=" + myApp.PowerBiService.appWorkspaceId;
+        var embedUrl = "https://app.powerbi.com/reportEmbed";
         var accessToken = myApp.SpaAuthService.accessToken;
         // Get models object to access enums for embed configuration
         var models = window['powerbi-client'].models;

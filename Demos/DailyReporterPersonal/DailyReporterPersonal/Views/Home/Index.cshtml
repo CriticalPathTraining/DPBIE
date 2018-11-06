@@ -1,5 +1,57 @@
-﻿
-<div class="jumbotron">
-    <h1>Daily Reporter Personal</h1>
+﻿@model DailyReporterPersonal.Models.HomeViewModel
+
+@if (Model.isUserAuthenticated) {
+
+
+  <script>
+    var viewModel = @Html.Raw(Model.jsonViewModel);
+  </script>
+
+  <div class='container-fluid'>
+    <div class='row'>
+      <div id="left-nav" class='col-sm-2'>
+        <div>
+
+          <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.dashboards-collapse'>
+              <i class="fa fa-bar-chart"></i> Dashboards
+            </button>
+          </div>
+          <div id='dashboards-menu' class='navbar-collapse dashboards-collapse'>
+            <ul id='dashboards-list' class='nav navbar-nav'></ul>
+          </div>
+
+          <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.reports-collapse'>
+              <i class="fa fa-bar-chart"></i> Reports
+            </button>
+          </div>
+          <div id='reports-menu' class='navbar-collapse reports-collapse'>
+            <ul id='reports-list' class='nav navbar-nav'></ul>
+          </div>
+          <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.datasets-collapse'>
+              <i class="fa fa-bar-chart"></i> Datasets
+            </button>
+          </div>
+          <div id='reports-menu' class='navbar-collapse datasets-collapse'>
+            <ul id='datasets-list' class='nav navbar-nav'></ul>
+          </div>
+        </div>
+      </div>
+      <div class='col-sm-10' style="padding-left:0;padding-right:0;border:solid 1px #666;">
+        <div id="embed-container"></div>
+      </div>
+      
+    </div>
+  </div>
+
+
+}
+else {
+  <div class="jumbotron">
+    <h1>Sign In to Get Started</h1>
     <p class="lead">This sample app demonstrates first-party embedding with Power BI.</p>
-</div>
+  </div>
+}
+
