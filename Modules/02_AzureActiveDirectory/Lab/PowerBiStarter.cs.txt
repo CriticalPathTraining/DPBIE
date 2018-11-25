@@ -1,0 +1,59 @@
+using System;
+using System.Net;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+
+namespace HelloPowerBiServiceApi {
+
+  class Program {
+
+    const string aadAuthorizationEndpoint = "https://login.windows.net/common";
+    const string resourceUriPowerBi = "https://analysis.windows.net/powerbi/api";
+    const string clientId = "YOUR_CLIENT_ID_HERE";
+    static readonly Uri redirectUri = new Uri("https://localhost/app1234");
+
+    static string GetAccessToken() {
+      var authContext = new AuthenticationContext(aadAuthorizationEndpoint);
+      var promptBehavior = new PlatformParameters(PromptBehavior.Auto);
+      AuthenticationResult result = 
+        authContext.AcquireTokenAsync(resourceUriPowerBi, clientId, redirectUri, promptBehavior).Result;
+      return result.AccessToken;
+    }
+
+    static string ExecuteGetRequest(string restUrl) {
+      HttpClient client = new HttpClient();
+      HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, restUrl);
+      request.Headers.Add("Authorization", "Bearer " + GetAccessToken());
+      request.Headers.Add("Accept", "application/json;odata.metadata=minimal");
+      HttpResponseMessage response = client.SendAsync(request).Result;
+      if (response.StatusCode != HttpStatusCode.OK) {
+        throw new ApplicationException("Error occured calling the Power BI Servide API");
+      }
+      return response.Content.ReadAsStringAsync().Result;
+    }
+
+    static void Main() {
+      var json = ExecuteGetRequest("https://api.powerbi.com/v1.0/myorg/reports/");
+      ReportCollection reports = JsonConvert.DeserializeObject<ReportCollection>(json);
+      foreach (Report report in reports.value) {
+        Console.WriteLine(report.name);
+      }      
+    }
+
+  }
+
+  public class Report {
+    public string id { get; set; }
+    public string name { get; set; }
+    public string webUrl { get; set; }
+    public string embedUrl { get; set; }
+    public bool isOwnedByMe { get; set; }
+    public string datasetId { get; set; }
+  }
+
+  public class ReportCollection {
+    public List<Report> value { get; set; }
+  }
+
+}
