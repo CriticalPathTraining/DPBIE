@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloPowerBiApi", "HelloPowerBiApi\HelloPowerBiApi.csproj", "{BFB6E7C7-82F1-4275-B02D-3E01D0911B45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFB6E7C7-82F1-4275-B02D-3E01D0911B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB6E7C7-82F1-4275-B02D-3E01D0911B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB6E7C7-82F1-4275-B02D-3E01D0911B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB6E7C7-82F1-4275-B02D-3E01D0911B45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7243D734-8F49-4E3D-8391-F82C8EB60E65}
+	EndGlobalSection
+EndGlobal
