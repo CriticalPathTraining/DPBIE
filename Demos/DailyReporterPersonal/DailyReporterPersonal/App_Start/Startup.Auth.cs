@@ -22,7 +22,7 @@ namespace DailyReporterPersonal {
 
     private static string resourceUriPowerBi = "https://analysis.windows.net/powerbi/api";
     private static string aadInstance = "https://login.microsoftonline.com/";
-    private static string commonAuthority = aadInstance + "powerbiembedding.onMicrosoft.com/";
+    private static string commonAuthority = aadInstance + "common";
     private static string claimsIdentifierForTenantId = "http://schemas.microsoft.com/identity/claims/tenantid";
 
     private static string clientId = ConfigurationManager.AppSettings["client-id"];
