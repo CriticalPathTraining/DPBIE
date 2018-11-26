@@ -1,8 +1,7 @@
 Clear-Host
 
-$userName = "student@portlandembed.onMicrosoft.com"
-$password = "Pa`$`$word!"
-
+$userName = ""
+$password = ""
 
 $appDisplayName = "Third Party Embedding Demo"
 $replyUrl = "https://localhost:44300"
