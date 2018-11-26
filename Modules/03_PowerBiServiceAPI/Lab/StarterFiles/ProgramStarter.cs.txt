@@ -1,0 +1,77 @@
+using System;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.PowerBI.Api.V2;
+using Microsoft.Rest;
+
+class Program {
+
+  static string aadAuthorizationEndpoint = "https://login.windows.net/common";
+  static string resourceUriPowerBi = "https://analysis.windows.net/powerbi/api";
+  static string urlPowerBiRestApiRoot = "https://api.powerbi.com/";
+
+  // enter the correct configuration values for your environment
+  static string appWorkspaceId = "";
+  static string clientId = "";
+  static string redirectUrl = "https://localhost/app1234";
+
+  static string GetAccessToken() {
+
+    // create new authentication context 
+    var authenticationContext = new AuthenticationContext(aadAuthorizationEndpoint);
+
+    // use authentication context to trigger user sign-in and return access token 
+    var promptBehavior = new PlatformParameters(PromptBehavior.SelectAccount);
+    var userAuthnResult = authenticationContext.AcquireTokenAsync(resourceUriPowerBi,
+                                                                  clientId,
+                                                                  new Uri(redirectUrl),
+                                                                  promptBehavior).Result;
+
+    // return access token to caller
+    return userAuthnResult.AccessToken;
+
+  }
+
+
+  static PowerBIClient GetPowerBiClient() {
+    var tokenCredentials = new TokenCredentials(GetAccessToken(), "Bearer");
+    return new PowerBIClient(new Uri(urlPowerBiRestApiRoot), tokenCredentials);
+  }
+
+  static void Main() {
+
+    DisplayPersonalWorkspaceAssets();
+
+  }
+
+  static void DisplayPersonalWorkspaceAssets() {
+
+    PowerBIClient pbiClient = GetPowerBiClient();
+
+    Console.WriteLine("Listing assets in app workspace: " + appWorkspaceId);
+    Console.WriteLine();
+
+    Console.WriteLine("Datasets:");
+    var datasets = pbiClient.Datasets.GetDatasetsInGroup(appWorkspaceId).Value;
+    foreach (var dataset in datasets) {
+      Console.WriteLine(" - " + dataset.Name + " [" + dataset.Id + "]");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("Reports:");
+    var reports = pbiClient.Reports.GetReportsInGroup(appWorkspaceId).Value;
+    foreach (var report in reports) {
+      Console.WriteLine(" - " + report.Name + " [" + report.Id + "]");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("Dashboards:");
+    var dashboards = pbiClient.Dashboards.GetDashboardsInGroup(appWorkspaceId).Value;
+    foreach (var dashboard in dashboards) {
+      Console.WriteLine(" - " + dashboard.DisplayName + " [" + dashboard.Id + "]");
+    }
+
+    Console.WriteLine();
+  }
+
+}
+
