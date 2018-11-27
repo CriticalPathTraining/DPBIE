@@ -1,13 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Rest;
 using Microsoft.PowerBI.Api.V2;
 using Microsoft.PowerBI.Api.V2.Models;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using Microsoft.Rest;
 
 class Program {
 
@@ -16,10 +13,9 @@ class Program {
   static string urlPowerBiRestApiRoot = "https://api.powerbi.com/";
 
   // enter the correct configuration values for your environment
-  static string appWorkspaceId = "dfe5e680-a85a-4731-8c89-963fa5c6c86e";
-  static string clientId = "0e0dd766-4db3-4dab-bc27-baecab09864d";
+  static string appWorkspaceId = "";
+  static string clientId = "";
   static string redirectUrl = "https://localhost/app1234";
-  static string masterUserAccount = "jamesb@portlandembed.onMicrosoft.com";
 
   static string GetAccessToken() {
 
@@ -27,8 +23,8 @@ class Program {
     var authenticationContext = new AuthenticationContext(aadAuthorizationEndpoint);
 
     // use authentication context to sign-in using User Password Credentials flow
-    string masterUserAccount = "student@portlandembed.onMicrosoft.com";
-    string masterUserPassword = "Pa$$word!";
+    string masterUserAccount = "";
+    string masterUserPassword = "";
     UserPasswordCredential creds = new UserPasswordCredential(masterUserAccount, masterUserPassword);
 
     var userAuthnResult =
@@ -46,24 +42,65 @@ class Program {
   }
 
   static void Main() {
-    //CloneAppWorkspace("WorkspaceTemplate", "Customer C");
-    CreateAppWorkspace("AWS 3");
+
+    DisplayPersonalWorkspaceAssets();
+
+    CreateAppWorkspace("AWS 1");
+
+    string appWorkspaceId = CreateAppWorkspace("AWS 2");
+    string pbixPath = @"C:\Student\PBIX\Wingtip Sales Analysis.pbix";
+    string importName = "Wingtip Sales";
+    PublishPBIX(appWorkspaceId, pbixPath, importName);
+
+    CloneAppWorkspace("Wingtip Sales", "AWS 3");
+
   }
 
-  static void CreateAppWorkspace(string Name) {
+  static void DisplayPersonalWorkspaceAssets() {
 
     PowerBIClient pbiClient = GetPowerBiClient();
 
+    Console.WriteLine("Listing assets in app workspace: " + appWorkspaceId);
+    Console.WriteLine();
+
+    Console.WriteLine("Datasets:");
+    var datasets = pbiClient.Datasets.GetDatasetsInGroup(appWorkspaceId).Value;
+    foreach (var dataset in datasets) {
+      Console.WriteLine(" - " + dataset.Name + " [" + dataset.Id + "]");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("Reports:");
+    var reports = pbiClient.Reports.GetReportsInGroup(appWorkspaceId).Value;
+    foreach (var report in reports) {
+      Console.WriteLine(" - " + report.Name + " [" + report.Id + "]");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("Dashboards:");
+    var dashboards = pbiClient.Dashboards.GetDashboardsInGroup(appWorkspaceId).Value;
+    foreach (var dashboard in dashboards) {
+      Console.WriteLine(" - " + dashboard.DisplayName + " [" + dashboard.Id + "]");
+    }
+
+    Console.WriteLine();
+  }
+
+  static string CreateAppWorkspace(string Name) {
+    PowerBIClient pbiClient = GetPowerBiClient();
+    // create new app workspace
     GroupCreationRequest request = new GroupCreationRequest(Name);
     Group aws = pbiClient.Groups.CreateGroup(request);
+    // return app workspace ID
+    return aws.Id;
+  }
 
-    GroupUserAccessRight user1Permissions = new GroupUserAccessRight("Admin", masterUserAccount);
-    pbiClient.Groups.AddGroupUser(aws.Id, user1Permissions);
-
-    // string customersCapcityId = "CAPACITY_GUID";
-    // AssignToCapacityRequest capReq = new AssignToCapacityRequest(customersCapcityId);
-    // pbiClient.Groups.AssignToCapacity(aws.Id, capReq);
-
+  static void PublishPBIX(string appWorkspaceId, string PbixFilePath, string ImportName) {
+    Console.WriteLine("Publishing " + PbixFilePath);
+    PowerBIClient pbiClient = GetPowerBiClient();
+    FileStream stream = new FileStream(PbixFilePath, FileMode.Open, FileAccess.Read);
+    var import = pbiClient.Imports.PostImportWithFileInGroup(appWorkspaceId, stream, ImportName);
+    Console.WriteLine("Publishing process completed");
   }
 
   static void CloneAppWorkspace(string sourceAppWorkspaceName, string targetAppWorkpaceName) {
@@ -89,29 +126,23 @@ class Program {
     if (targetAppWorkspaceId == "") {
       // create app workspace if it doesn't exist
       Console.WriteLine("Creating app workspace named " + targetAppWorkpaceName);
+      Console.WriteLine();
       GroupCreationRequest request = new GroupCreationRequest(targetAppWorkpaceName);
       Group AppWorkspace = pbiClient.Groups.CreateGroup(request);
-      targetAppWorkspaceId = AppWorkspace.Id;
-
-      string masterUserAccount = "pbiemasteruser@sharepointconfessions.onmicrosoft.com";
-      Console.WriteLine("Configuring " + masterUserAccount + " as workspace admin");
-      GroupUserAccessRight user1Permissions = new GroupUserAccessRight("Admin", masterUserAccount);
-      pbiClient.Groups.AddGroupUser(targetAppWorkspaceId, user1Permissions);
-
-      Console.WriteLine("Configuring workspace to run in dedicated capacity");
-      string customersCapcityId = "C9CCAA3E-18FB-4F2E-930F-CD3ABF609B8A";
-      AssignToCapacityRequest capReq = new AssignToCapacityRequest(customersCapcityId);
-      pbiClient.Groups.AssignToCapacity(targetAppWorkspaceId, capReq);
-
-      Console.WriteLine();
-
+      targetAppWorkspaceId = AppWorkspace.Id;      
     }
 
     var reports = pbiClient.Reports.GetReportsInGroup(sourceAppWorkspaceId).Value;
 
+    string downloadPath = @"C:\Student\downloads\";
+    // create download folder if it doesn't exist
+    if (!Directory.Exists(downloadPath)) {
+      Directory.CreateDirectory(downloadPath);
+    }
+
     foreach (var report in reports) {
       var reportStream = pbiClient.Reports.ExportReportInGroup(sourceAppWorkspaceId, report.Id);
-      string filePath = @"C:\tempExport\" + report.Name + ".pbix";
+      string filePath = downloadPath + report.Name + ".pbix";
       Console.WriteLine("Downloading PBIX file for " + report.Name + "to " + filePath);
       FileStream stream1 = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
       reportStream.CopyToAsync(stream1).Wait();
@@ -145,7 +176,7 @@ class Program {
       // clone tiles
       IList<Tile> sourceTiles = pbiClient.Dashboards.GetTilesInGroup(sourceAppWorkspaceId, sourceDashboard.Id).Value;
       foreach (Tile sourceTile in sourceTiles) {
-        Console.WriteLine("Adding title with title of " + sourceTile.Title);
+        Console.WriteLine("Adding dashboard tile with title of " + sourceTile.Title);
         var sourceDatasetID = sourceTile.DatasetId;
         var sourceDatasetName = pbiClient.Datasets.GetDatasetByIdInGroup(sourceAppWorkspaceId, sourceDatasetID).Name;
         var targetWorkspaceDatasets = pbiClient.Datasets.GetDatasetsInGroup(targetAppWorkspaceId).Value;
@@ -173,8 +204,6 @@ class Program {
 
       }
 
-     
-
     }
 
     Console.WriteLine();
@@ -183,92 +212,6 @@ class Program {
 
   }
 
-  static void PublishPBIX(string PbixFilePath, string ImportName) {
-    Console.WriteLine("Publishing " + PbixFilePath);
-    PowerBIClient pbiClient = GetPowerBiClient();
-    FileStream stream = new FileStream(PbixFilePath, FileMode.Open, FileAccess.Read);
-    var import = pbiClient.Imports.PostImportWithFile(stream, ImportName);
-    Console.WriteLine("Publishing process completed");
-
-  }
-
-  static void RefreshDataset(string DatasetName) {
-    PowerBIClient pbiClient = GetPowerBiClient();
-    IList<Dataset> datasets = pbiClient.Datasets.GetDatasets().Value;
-    foreach (var dataset in datasets) {
-      if (dataset.Name.Equals(DatasetName)) {
-        pbiClient.Datasets.RefreshDataset(dataset.Id);
-
-      }
-    }
-  }
-
-  public static void PatchDatasourceCredentials(string importName, string sqlAzureUser, string sqlAzurePassword) {
-
-    PowerBIClient pbiClient = GetPowerBiClient();
-    IList<Dataset> datasets = pbiClient.Datasets.GetDatasets().Value;
-    foreach (var dataset in datasets) {
-      if (dataset.Name.Equals(importName)) {
-
-        var Datasource = pbiClient.Datasets.GetGatewayDatasources(dataset.Id).Value[0];
-        string DatasourceId = Datasource.Id;
-        string GatewayId = Datasource.GatewayId;
-
-        // patching credentials does not yet work through the v2 API
-        // you must complete this action with a direct HTTP PATCH request
-
-        // create URL with pattern v1.0/myorg/gateways/{gateway_id}/datasources/{datasource_id}
-        string restUrlPatchCredentials =
-          urlPowerBiRestApiRoot + "" +
-          "v1.0/myorg/" +
-          "gateways/" + GatewayId + "/" +
-          "datasources/" + DatasourceId + "/";
-
-        // create C# object with credential data
-        DataSourceCredentials dataSourceCredentials =
-          new DataSourceCredentials {
-            credentialType = "Basic",
-            basicCredentials = new BasicCredentials {
-              username = sqlAzureUser,
-              password = sqlAzurePassword
-            }
-          };
-
-        // serialize C# object into JSON
-        string jsonDelta = JsonConvert.SerializeObject(dataSourceCredentials);
-
-        // add JSON to HttpContent object and configure content type
-        HttpContent patchRequestBody = new StringContent(jsonDelta);
-        patchRequestBody.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
-
-        // prepare PATCH request
-        var method = new HttpMethod("PATCH");
-        var request = new HttpRequestMessage(method, restUrlPatchCredentials);
-        request.Content = patchRequestBody;
-
-        HttpClient client = new HttpClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json");
-        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GetAccessToken());
-
-        // send PATCH request to Power BI service 
-        var result = client.SendAsync(request).Result;
-
-        Console.WriteLine("Credentials have been updated..");
-        Console.WriteLine();
-
-      }
-    }
-
-  }
 
 }
 
-public class DataSourceCredentials {
-  public string credentialType { get; set; }
-  public BasicCredentials basicCredentials { get; set; }
-}
-
-public class BasicCredentials {
-  public string username { get; set; }
-  public string password { get; set; }
-}

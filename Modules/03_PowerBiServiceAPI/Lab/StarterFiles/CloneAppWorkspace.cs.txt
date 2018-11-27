@@ -1,0 +1,108 @@
+  static void CloneAppWorkspace(string sourceAppWorkspaceName, string targetAppWorkpaceName) {
+
+    PowerBIClient pbiClient = GetPowerBiClient();
+    string sourceAppWorkspaceId = "";
+    string targetAppWorkspaceId = "";
+
+    var workspaces = pbiClient.Groups.GetGroups().Value;
+    foreach (var workspace in workspaces) {
+      if (workspace.Name.Equals(sourceAppWorkspaceName)) {
+        sourceAppWorkspaceId = workspace.Id;
+      }
+      if (workspace.Name.Equals(targetAppWorkpaceName)) {
+        targetAppWorkspaceId = workspace.Id;
+      }
+    }
+
+    if (sourceAppWorkspaceId == "") {
+      throw new ApplicationException("Source Workspace does not exist");
+    }
+
+    if (targetAppWorkspaceId == "") {
+      // create app workspace if it doesn't exist
+      Console.WriteLine("Creating app workspace named " + targetAppWorkpaceName);
+      Console.WriteLine();
+      GroupCreationRequest request = new GroupCreationRequest(targetAppWorkpaceName);
+      Group AppWorkspace = pbiClient.Groups.CreateGroup(request);
+      targetAppWorkspaceId = AppWorkspace.Id;      
+    }
+
+    var reports = pbiClient.Reports.GetReportsInGroup(sourceAppWorkspaceId).Value;
+
+    string downloadPath = @"C:\Student\downloads\";
+    // create download folder if it doesn't exist
+    if (!Directory.Exists(downloadPath)) {
+      Directory.CreateDirectory(downloadPath);
+    }
+
+    foreach (var report in reports) {
+      var reportStream = pbiClient.Reports.ExportReportInGroup(sourceAppWorkspaceId, report.Id);
+      string filePath = downloadPath + report.Name + ".pbix";
+      Console.WriteLine("Downloading PBIX file for " + report.Name + "to " + filePath);
+      FileStream stream1 = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
+      reportStream.CopyToAsync(stream1).Wait();
+      reportStream.Close();
+      stream1.Close();
+      stream1.Dispose();
+
+      FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+      Console.WriteLine("Publishing " + filePath + " to " + targetAppWorkpaceName);
+      var import = pbiClient.Imports.PostImportWithFileInGroup(targetAppWorkspaceId, stream, report.Name);
+
+      Console.WriteLine("Deleing file " + filePath);
+      stream.Close();
+      stream.Dispose();
+      File.Delete(filePath);
+
+      Console.WriteLine();
+    }
+
+    Console.WriteLine("Export/Import process completed");
+
+    var dashboards = pbiClient.Dashboards.GetDashboardsInGroup(sourceAppWorkspaceId).Value;
+
+    foreach (var sourceDashboard in dashboards) {
+      // create the target dashboard
+      Console.WriteLine();
+      Console.WriteLine("Creating Dashboard named " + sourceDashboard.DisplayName);
+      AddDashboardRequest addReq = new AddDashboardRequest(sourceDashboard.DisplayName);
+      Dashboard targetDashboard = pbiClient.Dashboards.AddDashboardInGroup(targetAppWorkspaceId, addReq);
+
+      // clone tiles
+      IList<Tile> sourceTiles = pbiClient.Dashboards.GetTilesInGroup(sourceAppWorkspaceId, sourceDashboard.Id).Value;
+      foreach (Tile sourceTile in sourceTiles) {
+        Console.WriteLine("Adding dashboard tile with title of " + sourceTile.Title);
+        var sourceDatasetID = sourceTile.DatasetId;
+        var sourceDatasetName = pbiClient.Datasets.GetDatasetByIdInGroup(sourceAppWorkspaceId, sourceDatasetID).Name;
+        var targetWorkspaceDatasets = pbiClient.Datasets.GetDatasetsInGroup(targetAppWorkspaceId).Value;
+        string targetDatasetId = "";
+        foreach (var ds in targetWorkspaceDatasets) {
+          if (ds.Name.Equals(sourceDatasetName)) {
+            targetDatasetId = ds.Id;
+          }
+        }
+        if (targetDatasetId.Equals("")) throw new ApplicationException("OOOOOuch!");
+
+        var sourceReportId = sourceTile.ReportId;
+        var sourceReportName = pbiClient.Reports.GetReportInGroup(sourceAppWorkspaceId, sourceReportId).Name;
+
+        var targetWorkspaceReports = pbiClient.Reports.GetReportsInGroup(targetAppWorkspaceId).Value;
+        string targetReportId = "";
+        foreach (var r in targetWorkspaceReports) {
+          if (r.Name.Equals(sourceReportName)) {
+            targetReportId = r.Id;
+          }
+        }
+
+        CloneTileRequest addReqTile = new CloneTileRequest(targetDashboard.Id, targetAppWorkspaceId, targetReportId, targetDatasetId);
+        pbiClient.Dashboards.CloneTileInGroup(sourceAppWorkspaceId, sourceDashboard.Id, sourceTile.Id, addReqTile);
+
+      }
+
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("All done - wow that was a lot of work :)");
+    Console.WriteLine();
+
+  }
