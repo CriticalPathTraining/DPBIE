@@ -1,0 +1,17 @@
+{
+  "rows": [
+    {
+      "Run": "Run 06",
+      "Time": "2017-10-05T22:43:40.364569-04:00",
+      "TimeWindow": "22:43:30",
+      "TargetTemperature": 212.0,
+      "MinTemperature": 100.0,
+      "MaxTemperature": 250.0,
+      "BatchA": 152.73999999999995,
+      "BatchB": 152.78,
+      "BatchC": 152.25
+    }
+  ]
+}
+
+

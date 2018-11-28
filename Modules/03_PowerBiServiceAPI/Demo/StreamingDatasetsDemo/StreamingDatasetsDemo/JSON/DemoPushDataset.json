@@ -1,0 +1,36 @@
+﻿{
+  "name": "@DatasetName",
+  "defaultMode": "Push",
+  "tables": [
+    { 
+      "name": "Contributions",
+      "columns": [
+        { "name": "ContributionID", "dataType": "Int64" },
+        { "name": "Contributor", "dataType": "string" },
+        { "name": "State", "dataType": "string", "dataCategory": "StateOrProvince" },
+        { "name": "City", "dataType": "string", "dataCategory": "Place" },
+        { "name": "Zipcode", "dataType": "Int64", "dataCategory": "PostalCode" },
+        { "name": "Gender", "dataType": "string" },
+        { "name": "Time", "dataType": "Datetime", "formatString": "hh:mm:ss" },
+        { "name": "TimeWindow", "dataType": "string" },
+        { "name": "Amount", "dataType": "Double", "formatString": "$#,##0" }
+      ],
+      "measures": [
+        { "name": "Total Contributions", "expression": "SUM(Contributions[Amount])", "formatString": "$#,##0" },
+        { "name": "Contribution Count", "expression": "COUNTROWS(Contributions)", "formatString": "#,##0" },
+        { "name": "Max Contribution", "expression": "MAX(Contributions[Amount])", "formatString": "$#,##0" },
+        { "name": "Average Contribution", "expression": "AVERAGE(Contributions[Amount])", "formatString": "$#,##0.00" }
+      ]
+    },
+    {
+      "name": "ContributionsGoal",
+      "columns": [ { "name": "Value", "dataType": "Double", "formatString": "$#,##0" }
+      ]
+    },
+    {
+      "name": "ContributionsMax",
+      "columns": [ { "name": "Value", "dataType": "Double", "formatString": "$#,##0" }
+      ]
+    }
+  ]
+}
