@@ -1,0 +1,27 @@
+.customer-toolbar {
+    padding: 8px;
+    background-image: linear-gradient(to bottom, #555 0%, #222 50%, #222 100%);
+    color: darkblue;
+    border: 1px solid black;
+    height: 32px;
+}
+  
+.customer-toolbar ul {
+    line-height: 1em;
+    padding-left: 12px;
+  }
+  
+  .customer-toolbar ul li {
+    display: inline-block;
+    margin-right: 16px;
+    color: #FEBF0F;
+  }
+  
+  .customer-toolbar li a {
+    color: #FEBF0F;
+    text-decoration: none;
+  }
+  
+  .customer-toolbar li a.active-nav-link {
+    color: yellow;
+  }

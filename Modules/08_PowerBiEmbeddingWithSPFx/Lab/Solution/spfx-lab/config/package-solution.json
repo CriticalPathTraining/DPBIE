@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "name": "spfx-lab-client-side-solution",
+    "id": "338319c3-e77f-43ff-bf6f-ed0d20f3cdd1",
+    "version": "1.0.0.0"
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-lab.sppkg"
+  }
+}

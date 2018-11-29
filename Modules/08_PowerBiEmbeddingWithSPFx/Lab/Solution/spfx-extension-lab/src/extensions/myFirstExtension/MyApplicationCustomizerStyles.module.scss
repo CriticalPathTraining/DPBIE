@@ -1,0 +1,22 @@
+$my-background-color: darkblue;
+$my-font-color: yellow;
+
+.app {
+  .top {
+      height:32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $my-background-color;
+      color: $my-font-color;
+  }
+
+  .bottom {
+      height:32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $my-background-color;
+      color: $my-font-color;
+  }
+}

@@ -1,0 +1,21 @@
+.customers-toolbar {
+  padding: 4px;
+  background-image: linear-gradient(to bottom, #555 0%, #444 50%, #555 100%);
+}
+
+.customers-toolbar .view-menu {
+  margin-right: 16px;
+}
+
+  .customers-toolbar .customers-menu {
+    padding: 0px;
+  }
+  
+  .customers-toolbar .customers-menu button {
+    padding-left: 8px;
+    padding-right: 8px;
+  }  
+
+  .customers-toolbar .search-menu {
+    margin-left: 16px;
+  }

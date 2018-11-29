@@ -1,0 +1,49 @@
+/* CPT Colors: { Red: #9F1B30, Orange: 	6:00 PM 1/29/2017Yellow: #FEBF0F } */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: orange;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+ul {
+    margin: 0;
+}
+
+#page-container{
+  background-color: white;
+  min-height: 600px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid black;
+}
+
+.content-body {
+  padding: 24px;
+}
+
+.content-body h1, h2, h3 {
+  color: #333;
+}
+
+.content-body h1 {
+  font-size: 18px;
+}
+
+
+#embed-container {
+  margin: 4px;
+  margin-left: 184px;
+  height: 600px;
+  border: 1px black solid;
+}
+
+.jumbotron {
+  padding-top: 18px;
+  padding-bottom: 16px;
+}

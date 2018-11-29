@@ -1,0 +1,23 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: orange;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+#page-container{
+  background-color: white;
+  min-height: 600px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid black;
+}
+
+.content-body {
+  padding: 24px;
+}
+
+.jumbotron {
+  padding-top: 18px;
+  padding-bottom: 16px;
+}

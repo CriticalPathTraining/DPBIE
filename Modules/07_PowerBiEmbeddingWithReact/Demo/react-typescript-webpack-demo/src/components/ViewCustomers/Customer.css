@@ -1,0 +1,32 @@
+.customer {
+    margin: 4px;
+    padding: 4px;
+}
+
+.customer-details {
+    margin: 4px;
+    padding: 4px;
+}
+
+fieldset.form-group {
+    border: 1px solid black;
+    padding: 16px;
+    padding-top: 0px;
+    margin: 8px;
+
+}
+
+
+fieldset.form-group legend {
+    width: auto;
+    padding: 4px;
+    font-size: 1.35em;
+    margin: 0px;
+}
+
+
+fieldset.form-group label {
+    padding: 0px;
+    margin-top: 8px;
+    margin-bottom: 2px;
+}

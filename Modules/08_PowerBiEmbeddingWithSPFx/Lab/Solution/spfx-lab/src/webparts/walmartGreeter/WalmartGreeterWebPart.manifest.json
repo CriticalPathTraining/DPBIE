@@ -1,0 +1,34 @@
+{
+  "$schema": "../../../node_modules/@microsoft/sp-module-interfaces/lib/manifestSchemas/jsonSchemas/clientSideComponentManifestSchema.json",
+  "id": "8aee034e-29cc-4c44-8490-fc96a9175734",
+  "alias": "WalmartGreeterWebPart",
+  "componentType": "WebPart",
+  "version": "*", // The "*" signifies that the version should be taken from the package.json
+  "manifestVersion": 2,
+  /**
+   * This property should only be set to true if it is certain that the webpart does not
+   *  allow arbitrary scripts to be called
+   */
+  "safeWithCustomScriptDisabled": false,
+  "preconfiguredEntries": [
+    {
+      "groupId": "8aee034e-29cc-4c44-8490-fc96a9175734",
+      "group": {
+        "default": "Under Development"
+      },
+      "title": {
+        "default": "Walmart Greeter"
+      },
+      "description": {
+        "default": "My First SPFx WebPart"
+      },
+      "officeFabricIconFontName": "Emoji2",
+      "properties": {
+        "greeting": "Welcome to Walmart",
+        "fontBold": false,
+        "fontType": "Arial",
+        "fontSize": 36
+      }
+    }
+  ]
+}

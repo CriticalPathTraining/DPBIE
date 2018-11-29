@@ -1,0 +1,30 @@
+.customers-toolbar {
+    padding: 4px;
+    background-image: linear-gradient(to bottom, #555 0%, #222 50%, #222 100%);
+
+    /* 
+    height: 32px;
+    color: darkblue;
+    border: 1px solid black;
+    
+    */
+}
+
+.customers-toolbar .view-menu {
+  margin-right: 16px;
+}
+
+  .customers-toolbar .customers-menu {
+    padding: 0px;
+  }
+  
+  .customers-toolbar .customers-menu button {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+
+  .customers-toolbar .search-menu {
+    margin-left: 16px;
+  }
+   

@@ -1,0 +1,40 @@
+protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  return {
+    pages: [
+      {
+        header: { description: "Greeter Web Part" },
+        groups: [
+          {
+            groupName: "General Properties",
+            groupFields: [
+              PropertyPaneTextField('greeting', { label: 'Greeting' }),
+            ]
+          },
+          {
+            groupName: "Cosmetic Properties",
+            groupFields: [
+              PropertyPaneToggle('fontBold', { 
+                label: 'Font Bold',
+                onText: 'On',
+                offText: 'Off'
+              }),
+              PropertyPaneDropdown('fontType', {
+                label: 'Font Type',
+                options: [
+                  { key: 'Arial', text: 'Arial' },
+                  { key: 'Courier,', text: 'Courier' },
+                  { key: 'Verdana', text: 'Verdana' }
+                ]
+              }),
+              PropertyPaneSlider("fontSize", {
+                label: "Font Size",
+                min: 24,
+                max: 64
+              }),
+            ]
+          }
+        ]
+      }
+    ]
+  };
+}

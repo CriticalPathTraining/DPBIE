@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "entry": "./lib/webparts/walmartGreeter/WalmartGreeterWebPart.js",
+      "manifest": "./src/webparts/walmartGreeter/WalmartGreeterWebPart.manifest.json",
+      "outputPath": "./dist/walmart-greeter.bundle.js"
+    }
+  ],
+  "externals": {},
+  "localizedResources": {
+    "walmartGreeterStrings": "webparts/walmartGreeter/loc/{locale}.js"
+  }
+}

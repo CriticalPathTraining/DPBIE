@@ -1,0 +1,15 @@
+$background-color: lightsalmon;
+$font-color: navy;
+
+.walmartGreeter {
+    max-width: 700px;
+    border: 2px solid black;
+    border-radius: 12px;
+    background-color: $background-color;
+    padding: 12px;
+
+    h1{      
+      color: $font-color;
+      font-size: 2.5em;
+    }
+}
