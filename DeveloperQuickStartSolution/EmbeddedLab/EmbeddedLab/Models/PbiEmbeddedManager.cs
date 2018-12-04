@@ -6,23 +6,24 @@ using Microsoft.PowerBI.Api.V2;
 using Microsoft.PowerBI.Api.V2.Models;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
+
 namespace EmbeddedLab.Models {
 
   public class PbiEmbeddedManager {
 
-    private static string aadAuthorizationEndpoint = "https://login.microsoftonline.com/common";
+    private static string aadAuthorizationEndpoint = "https://login.windows.net/common";
     private static string resourceUriPowerBi = "https://analysis.windows.net/powerbi/api";
     private static string urlPowerBiRestApiRoot = "https://api.powerbi.com/";
 
-    private static string applicationId = ConfigurationManager.AppSettings["application-id"];
+    private static string userName = ConfigurationManager.AppSettings["aad-account-name"];
+    private static string userPassword = ConfigurationManager.AppSettings["aad-account-password"];
 
     private static string workspaceId = ConfigurationManager.AppSettings["app-workspace-id"];
     private static string datasetId = ConfigurationManager.AppSettings["dataset-id"];
     private static string reportId = ConfigurationManager.AppSettings["report-id"];
     private static string dashboardId = ConfigurationManager.AppSettings["dashboard-id"];
 
-    private static string userName = ConfigurationManager.AppSettings["aad-account-name"];
-    private static string userPassword = ConfigurationManager.AppSettings["aad-account-password"];
+    private static string clientId = ConfigurationManager.AppSettings["client-id"];
 
     private static string GetAccessToken() {
 
@@ -31,7 +32,7 @@ namespace EmbeddedLab.Models {
       AuthenticationResult userAuthnResult =
         authenticationContext.AcquireTokenAsync(
           resourceUriPowerBi,
-          applicationId,
+          clientId,
           new UserPasswordCredential(userName, userPassword)).Result;
 
       return userAuthnResult.AccessToken;
@@ -134,7 +135,9 @@ namespace EmbeddedLab.Models {
     }
 
     public static async Task<ReportEmbeddingData> GetEmbeddingDataForReport(string currentReportId) {
+
       PowerBIClient pbiClient = GetPowerBiClient();
+
       var report = await pbiClient.Reports.GetReportInGroupAsync(workspaceId, currentReportId);
       var embedUrl = report.EmbedUrl;
       var reportName = report.Name;

@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using EmbeddedLab.Models;
 
 namespace EmbeddedLab.Controllers {
-
   public class HomeController : Controller {
 
     public ActionResult Index() {
@@ -40,7 +39,5 @@ namespace EmbeddedLab.Controllers {
       return View(embeddingData);
     }
 
-
   }
-
 }
