@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outFile": "./dist/scripts/app.js",
+    "sourceMap": true,
+    "lib": [ "dom", "es6" ]
+  },
+  "files": [
+    "./src/scripts/app.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "myfirstapplication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jquery": "^3.3.5",
+    "browser-sync": "^2.24.6",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "typescript": "^3.0.1"
+  }
+}

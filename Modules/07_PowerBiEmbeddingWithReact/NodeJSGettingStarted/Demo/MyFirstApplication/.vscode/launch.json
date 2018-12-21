@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Local Debugging Session",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceRoot}/dist",
+      "sourceMaps": true,
+      "runtimeArgs": [
+        "--remote-debugging-port=9222"
+      ]
+    }
+  ]
+}
