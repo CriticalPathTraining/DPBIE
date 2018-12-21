@@ -21,8 +21,8 @@ export interface IPowerBiReport1WebPartProps {
 
 export default class PowerBiReport1WebPart extends BaseClientSideWebPart<IPowerBiReport1WebPartProps> {
 
-  private workspaceId: string = "7f4576c7-039a-472f-b998-546a572d5da2";
-  private reportId: string = "ba274ba0-93be-4e53-af65-fdc8a559c557";
+  private workspaceId: string = "ca57a3b1-6fff-43fc-9bf4-7d1814697855";
+  private reportId: string = "10fb7850-b4be-43d5-aec9-39745b3cff01";
 
   public render(): void {
 
